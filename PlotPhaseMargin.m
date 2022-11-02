@@ -5,7 +5,7 @@ function PlotPhaseMargin(phasemargin,units,range,color,alpha)
 % Author: Iris Ushizima (isabino@princeton.edu)
 % Date:   2 Nov, 2022
 % =========================================================================
-% phasemargin = critical phase margin (0 is at 180degrees)
+% phasemargin = critical phase margin
 % units = "d" for degrees or "r" for radians
 % range = "l" for a phase margin less than the critical
 %         "g" for a phase margin greater than the critical
