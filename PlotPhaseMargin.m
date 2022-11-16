@@ -1,5 +1,4 @@
 function PlotPhaseMargin(phasemargin,units,range,color,alpha)
-
 % Plots Range of Phase Margins
 % =========================================================================
 % Author: Iris Ushizima (isabino@princeton.edu)
