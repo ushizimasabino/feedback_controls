@@ -1,36 +1,50 @@
-function [w,zeta,sigma] = SetTimeDomain(Tr,Mp,Ts)
+function [w,zeta,sigma] = SetTimeDomain(Mp,Tr,Ts,varargin)
 % Gives Natural Frequency, Damping Ratio and Real Part to Satisfy TD Specs
 % =========================================================================
 % Author: Iris Ushizima (isabino@princeton.edu)
 % Date:   16 Nov, 2022
 % =========================================================================
-% Tr = rise time (s)
+% Write x to indicate unspecified parameter
+% 
+% If all parameters are specified, SetTimeDomain will set Mp & Tr only by
+% default
+% 
 % Mp = overshoot (%)
+% Tr = rise time (s)
 % Ts = settling time (s)
 % w = natural frequency
 % zeta = damping ratio
 % sigma = real part of poles
 % =========================================================================
 % [w,zeta,sigma] = SetTimeDomain(Tr,Mp,Ts)
+% [w,zeta,sigma] = SetTimeDomain(Tr,Mp,Ts,show)
 
-zeta = sqrt(ln(Mp)^2 / ( pi^2 + ln(Mp)^2));
-if zeta == 1 || zeta >= 0.9
-    w = 3.3/Tr;
-elseif zeta >= 0.6
-    w = 2.2/Tr;
-else
-    w = 1.6/Tr;
+% Default to Mp & Tr
+default = ~ (isa(Mp,"char") | isa(Tr,"char") | isa(Ts,"char"));
+if default
+    Ts = x;
 end
 
-sigma = zeta * w;
+if ~isa(Mp,"char")
+    zeta = sqrt(ln(Mp)^2 / ( pi^2 + ln(Mp)^2));
+else
+    sigma = log(50)/Ts;
+    w = 
+    zeta = sigma/w;
+end
 
-% Next Edit:
-% varargin:
-% Mp & Ts (calculate w)
-% Mp & Tr (calculate sigma)
-% Ts & Tr (calculate zeta)
-% default to Mp & Ts???
+% Mp & Tr given
+if isa(Ts,"char")
+    w = (2.2*zeta^2 + 1.1)/Tr;
+    sigma = zeta * w;
+% Mp & Ts given
+elseif isa(Tr,"char")
+    sigma = log(50)/Ts;
+    w = sigma/zeta;
+end
 
-% include option to display characteristic equation?
+if nargin<0
+    fprintf("s^2 + %.2f s + %.2f\n",sigma,w^2);
+end
 
 % GetTimeDomain
