@@ -27,7 +27,7 @@ if default
 end
 
 if isa(Mp,"double")
-    zeta = sqrt(log(Mp)^2 / ( pi^2 + ln(Mp)^2));
+    zeta = sqrt(log(Mp)^2 / ( pi^2 + log(Mp)^2));
 else
     sigma = log(50)/Ts;
     zeta = -0.01;
@@ -40,11 +40,11 @@ else
 end
 
 % Mp & Tr given
-if isa(Ts,"char")
+if ~isa(Ts,"double")
     w = (2.2*zeta^2 + 1.1)/Tr;
     sigma = zeta * w;
 % Mp & Ts given
-elseif isa(Tr,"char")
+elseif ~isa(Tr,"double")
     sigma = log(50)/Ts;
     w = sigma/zeta;
 end
