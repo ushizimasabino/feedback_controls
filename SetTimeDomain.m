@@ -20,17 +20,23 @@ function [w,zeta,sigma] = SetTimeDomain(Mp,Tr,Ts,varargin)
 % [w,zeta,sigma] = SetTimeDomain(Tr,Mp,Ts,show)
 
 % Default to Mp & Tr
-default = ~ (isa(Mp,"char") | isa(Tr,"char") | isa(Ts,"char"));
+bool = isa(Mp,"double") && isa(Tr,"double") && isa(Ts,"double");
+default = bool;
 if default
-    Ts = x;
+    Ts = "x";
 end
 
-if ~isa(Mp,"char")
-    zeta = sqrt(ln(Mp)^2 / ( pi^2 + ln(Mp)^2));
+if isa(Mp,"double")
+    zeta = sqrt(log(Mp)^2 / ( pi^2 + ln(Mp)^2));
 else
     sigma = log(50)/Ts;
-    w = 
-    zeta = sigma/w;
+    zeta = -0.01;
+    test = 2;
+    while abs(test)>0.01 % gets within about 1% precision
+        zeta = zeta+0.001;
+        w = (2.2*zeta^2 + 1.1)/Tr;
+        test = sigma-w*zeta;
+    end
 end
 
 % Mp & Tr given
@@ -46,5 +52,3 @@ end
 if nargin<0
     fprintf("s^2 + %.2f s + %.2f\n",sigma,w^2);
 end
-
-% GetTimeDomain
